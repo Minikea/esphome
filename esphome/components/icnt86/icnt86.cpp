@@ -26,8 +26,7 @@ void ICNT86Touchscreen::setup() {
 
   this->x_raw_max_ = this->display_->get_native_width();
   this->y_raw_max_ = this->display_->get_native_height();
-
-  this->conversion_to_resolution_ = false;
+  
   // Trigger initial read to activate the interrupt
   this->store_.touched = true;
 }
@@ -46,15 +45,15 @@ void ICNT86Touchscreen::update_touches() {
     this->icnt_write_(0x1001, mask, 1);
     ESP_LOGD(TAG, "Touch count: %d", touch_count);
 
-    for (UBYTE i = 0; i < touch_count; i++) {
-      UWORD x = ((UWORD) buf[2 + 7 * i] << 8) + buf[1 + 7 * i];
-      UWORD y = ((UWORD) buf[4 + 7 * i] << 8) + buf[3 + 7 * i];
-      UWORD p = buf[5 + 7 * i];
-      UWORD touch_evenid = buf[6 + 7 * i];
-      if (this->touches_.count(touch_evenid) == 0 ||
-          (x != this->touches_[touch_evenid].x_prev && y != this->touches_[touch_evenid].y_prev)) {
-        this->add_raw_touch_position_(touch_evenid, x, y, p);
-      }
+    for (uint8_t i = 0; i < touch_count; i++) {
+      uint16_t x = ((uint16_t) buf[2 + 7 * i] << 8) + buf[1 + 7 * i];
+      uint16_t y = ((uint16_t) buf[4 + 7 * i] << 8) + buf[3 + 7 * i];
+      uint16_t p = buf[5 + 7 * i];
+      uint16_t touch_evenid = buf[6 + 7 * i];
+      //if (this->touches_.count(touch_evenid) == 0 ||
+      //    (x != this->touches_[touch_evenid].x_prev && y != this->touches_[touch_evenid].y_prev)) {
+      this->add_raw_touch_position_(touch_evenid, x, y, p);
+      //}
     }
   }
 }

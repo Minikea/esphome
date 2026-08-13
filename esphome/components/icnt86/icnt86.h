@@ -5,12 +5,7 @@
 #include "esphome/core/component.h"
 #include "esphome/core/hal.h"
 
-namespace esphome {
-namespace icnt86 {
-
-#define UBYTE uint8_t
-#define UWORD uint16_t
-#define UDOUBLE uint32_t
+namespace esphome::icnt86 {
 
 class ICNT86Touchscreen : public touchscreen::Touchscreen, public i2c::I2CDevice {
  public:
@@ -23,14 +18,13 @@ class ICNT86Touchscreen : public touchscreen::Touchscreen, public i2c::I2CDevice
  protected:
   void update_touches() override;
   void reset_();
-  void i2c_read_byte_(UWORD reg, char const *data, UBYTE len);
-  void icnt_read_(UWORD reg, char const *data, UBYTE len);
-  void icnt_write_(UWORD reg, char const *data, UBYTE len);
-  void i2c_write_byte_(UWORD reg, char const *data, UBYTE len);
+  void i2c_read_byte_(uint16_t reg, char const *data, uint8_t len);
+  void icnt_read_(uint16_t reg, char const *data, uint8_t len);
+  void icnt_write_(uint16_t reg, char const *data, uint8_t len);
+  void i2c_write_byte_(uint16_t reg, char const *data, uint8_t len);
   void reset_touch_sensor_();
   InternalGPIOPin *interrupt_pin_{};
   GPIOPin *reset_pin_{nullptr};
 };
 
-}  // namespace icnt86
-}  // namespace esphome
+}  // namespace esphome::icnt86
